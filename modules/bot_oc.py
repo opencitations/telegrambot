@@ -75,34 +75,34 @@ def ask_coci(a_text):
             rc_data = json_output[0]
 
             #Title
-            str_title = "\n\n Title: "+rc_data['title']
-            if str_title != "\n\n Title: ":
+            str_title = "\n\nTitle: "+rc_data['title']
+            if str_title != "\n\nTitle: ":
                 str_to_return = str_to_return + str_title
 
             #Authors
-            str_authors = "\n\n Author(s): "
+            str_authors = "\n\nAuthor(s): "
             list_authors = rc_data['author'].split(';')
             for an_author in list_authors:
                 str_authors = str_authors + "\n" + str(an_author)
-            if str_authors != "\n\n Author(s): ":
+            if str_authors != "\n\nAuthor(s): ":
                 str_to_return = str_to_return + str_authors
 
             #Publication year
-            str_year = "\n\n Publication year: " + rc_data['year']
-            if str_year != "\n\n Publication year: ":
+            str_year = "\n\nPublication year: " + rc_data['year']
+            if str_year != "\n\nPublication year: ":
                 str_to_return = str_to_return + str_year
 
             #DOI
-            str_to_return = str_to_return + "\n DOI: "+'https://www.doi.org/'+input
+            str_to_return = str_to_return + "\n\nDOI: "+'https://www.doi.org/'+input
 
             #OA URL
-            str_cit = "\n\n OA URL: "+rc_data['oa_link']
-            if str_cit != "\n\n OA URL: ":
+            str_cit = "\n\nOA URL: "+rc_data['oa_link']
+            if str_cit != "\n\nOA URL: ":
                 str_to_return = str_to_return + str_cit
 
             #Citations
-            str_cit = "\n\n Cited by: "+rc_data['citation_count']
-            if str_cit != "\n\n Cited by: ":
+            str_cit = "\n\nCited by: "+rc_data['citation_count']
+            if str_cit != "\n\nCited by: ":
                 str_to_return = str_to_return + str_cit
 
     except:
@@ -134,26 +134,26 @@ def who_cite_me_in_coci(a_text):
         if len(json_output) == 0:
             return "No citations found for: "+ input
         else:
-            str_to_return = str_to_return + "\n Cited by: "+str(len(json_output))+ "\n\n"
+            str_to_return = str_to_return + "\nCited by: "+str(len(json_output))+ "\n\n"
             for c_elem in json_output:
 
                 #OCI
-                str_to_return = str_to_return + "\n OCI: "+str(c_elem['oci'])
+                str_to_return = str_to_return + "\nOCI: "+str(c_elem['oci'])
 
                 #DOI
-                str_to_return = str_to_return + "\n Citing DOI: "+'https://www.doi.org/'+c_elem['citing']
+                str_to_return = str_to_return + "\nCiting DOI: "+'https://www.doi.org/'+c_elem['citing']
 
                 #Citation Creation date
                 creation_str = ""
-                list_date = c_elem['oci'].split("-")
+                list_date = c_elem['creation'].split("-")
                 if len(list_date) > 0:
                     creation_str = str(list_date[0])
                     if len(list_date) > 1:
                         creation_str = get_month_name(str(list_date[1])) +" "+ creation_str
                         if len(list_date) > 2:
-                            creation_str = str(list_date[2]) + " "+ creation_str
+                            creation_str = str(int(list_date[2])) + " "+ creation_str
                 if creation_str != "":
-                    str_to_return = str_to_return + "\n Citation creation date: "+creation_str
+                    str_to_return = str_to_return + "\nCitation creation date: "+creation_str
 
                 #Timespan
                 tspan_str = ""
@@ -167,7 +167,7 @@ def who_cite_me_in_coci(a_text):
                         if result_y:
                             tspan_str += ", "+str(result_y.groups(0)[0]) + " Days"
                 if tspan_str != "":
-                    str_to_return = str_to_return + "\n Timespan: "+tspan_str
+                    str_to_return = str_to_return + "\nTimespan: "+tspan_str
 
                 ##New item
                 str_to_return = str_to_return + "\n\n"
@@ -190,7 +190,7 @@ def what_are_my_ref_in_coci(a_text):
         return "Please, text me a correct DOI format"
 
     res = find_list[0]
-    api_call = 'https://w3id.org/oc/index/coci/api/v1/references/'
+    api_call = 'http://opencitations.net/index/coci/api/v1/references/'
     input = res
     api_call = api_call+input
     #call API
@@ -200,25 +200,42 @@ def what_are_my_ref_in_coci(a_text):
         if len(json_output) == 0:
             return "No references found for: "+ input
         else:
-            str_to_return = str_to_return + "\n References: "+str(len(json_output))+ "\n\n"
+            str_to_return = str_to_return + "\nReferences: "+str(len(json_output))+ "\n\n"
             for c_elem in json_output:
-                str_to_return = str_to_return + "\n Cited: "+c_elem['cited']
 
-                pub_date = ""
+                #OCI
+                str_to_return = str_to_return + "\nOCI: "+str(c_elem['oci'])
+
+                #DOI
+                str_to_return = str_to_return + "\nCited DOI: "+'https://www.doi.org/'+c_elem['cited']
+
+                #Citation Creation date
+                creation_str = ""
+                list_date = c_elem['creation'].split("-")
+                if len(list_date) > 0:
+                    creation_str = str(list_date[0])
+                    if len(list_date) > 1:
+                        creation_str = get_month_name(str(list_date[1])) +" "+ creation_str
+                        if len(list_date) > 2:
+                            creation_str = str(int(list_date[2])) + " "+ creation_str
+                if creation_str != "":
+                    str_to_return = str_to_return + "\nCitation creation date: "+creation_str
+
+                #Timespan
+                tspan_str = ""
                 result_y = re.search(r"(\d{1,})Y",c_elem['timespan'])
                 if result_y:
-                    pub_date += str(result_y.groups(0)[0]) + " Years"
+                    tspan_str += str(result_y.groups(0)[0]) + " Years"
                     result_y = re.search(r"(\d{1,})M",c_elem['timespan'])
                     if result_y:
-                        pub_date += ", "+str(result_y.groups(0)[0]) + " Months"
+                        tspan_str += ", "+str(result_y.groups(0)[0]) + " Months"
                         result_y = re.search(r"(\d{1,})D",c_elem['timespan'])
                         if result_y:
-                            pub_date += ", "+str(result_y.groups(0)[0]) + " Days"
+                            tspan_str += ", "+str(result_y.groups(0)[0]) + " Days"
+                if tspan_str != "":
+                    str_to_return = str_to_return + "\nTimespan: "+tspan_str
 
-                str_to_return = str_to_return + "\n Timespan: "+pub_date
-
-
-                str_to_return = str_to_return + "\n Resource: "+"http://opencitations.net/index/coci/browser/ci/"+c_elem['oci']
+                ##New item
                 str_to_return = str_to_return + "\n\n"
     except:
         return "Sorry, the connection went wrong!"

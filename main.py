@@ -63,7 +63,21 @@ def handle(msg):
                 if len(all_commands[module]['commands'].keys()) != 0:
                     msg = msg + "\n"
 
-    bot.sendMessage(chat_id, msg)
+    list_msgs = []
+    while len(msg) > 3000:
+        index = 3000
+        while True:
+            if (msg[index:index+1] == "\n"):
+                break
+            else:
+                index -= 1
+
+        list_msgs.append(msg[0:index])
+        msg = msg[index:len(msg)-1]
+    list_msgs.append(msg)
+
+    for m in list_msgs:
+        bot.sendMessage(chat_id, m)
 
 
 all_commands = {}
