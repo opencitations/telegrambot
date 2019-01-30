@@ -2,8 +2,8 @@
 my_commands = {
     "/contact" : {"notes":" Retrieve all the accounts (email, Twitter, GitHub, etc.) to contact the OpenCitations folks", 'parse_mode':'Markdown'},
     "/ask" : {"notes":"Params: <DOI>. Retrieve information about the entity identified by the input DOI (source: COCI)", 'parse_mode':'Markdown'},
-    "/citations" : {"notes":"Params: <DOI>. Retrieve all the entities that cite the one identified by the input DOI (source: COCI)"},
-    "/references" : {"notes":"Params: <DOI>. Retrieve all the entities that are cited by the one identified by the input DOI (source: COCI)"}
+    "/citations" : {"notes":"Params: <DOI>. Retrieve all the entities that cite the one identified by the input DOI (source: COCI)", 'parse_mode':'Markdown'},
+    "/references" : {"notes":"Params: <DOI>. Retrieve all the entities that are cited by the one identified by the input DOI (source: COCI)", 'parse_mode':'Markdown'},
 }
 
 def get_my_commands():
