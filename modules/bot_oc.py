@@ -42,7 +42,7 @@ contact = {
 def how_to_contact_you(a_text):
     str_to_return = ""
     for c in contact:
-        str_to_return = str_to_return + "\n"+c+": "+contact[c]
+        str_to_return = str_to_return + "\n*"+c+"*: "+contact[c]
     return str_to_return
 
 
@@ -53,11 +53,11 @@ def ask_coci(a_text):
     try:
         a_text = a_text[0]
     except:
-        return "You must text me a DOI !"
+        return "You must text me a *DOI* !"
 
     find_list = re.findall(r"(10.\d{4,9}\/\S*)",a_text)
     if len(find_list) == 0:
-        return "Please, text me a correct DOI format"
+        return "Please, text me a correct *DOI format*"
 
     res = find_list[0]
 
@@ -70,17 +70,17 @@ def ask_coci(a_text):
         contents = urllib.request.urlopen(api_call).read().decode('utf-8')
         json_output = json.loads(contents)
         if len(json_output) == 0:
-            return "No data found for: "+ input
+            return "No data found for: *"+ input+"*"
         else:
             rc_data = json_output[0]
 
             #Title
-            str_title = "\n\nTitle: "+rc_data['title']
-            if str_title != "\n\nTitle: ":
+            str_title = "\n\n*Title:* "+rc_data['title']
+            if str_title != "\n\n*Title:* ":
                 str_to_return = str_to_return + str_title
 
             #Authors
-            str_authors = "\n\nAuthor(s): "
+            str_authors = "\n\n*Author(s):* "
             for an_author in rc_data['author']:
                 an_author_str = ""
                 if 'fn' in an_author:
@@ -93,7 +93,7 @@ def ask_coci(a_text):
                 if an_author_str != "":
                     str_authors = str_authors + '\n' + an_author_str
 
-            if str_authors != "\n\nAuthor(s): ":
+            if str_authors != "\n\n*Author(s):* ":
                 str_to_return = str_to_return + str_authors
 
 
@@ -104,21 +104,21 @@ def ask_coci(a_text):
             #    str_to_return = str_to_return + str_authors
 
             #Publication year
-            str_year = "\n\nPublication year: " + rc_data['year']
-            if str_year != "\n\nPublication year: ":
+            str_year = "\n\n*Publication year:* " + rc_data['year']
+            if str_year != "\n\n*Publication year:* ":
                 str_to_return = str_to_return + str_year
 
             #DOI
-            str_to_return = str_to_return + "\n\nDOI: "+'https://www.doi.org/'+input
+            str_to_return = str_to_return + "\n\n*DOI:* "+'https://www.doi.org/'+input
 
             #OA URL
-            str_cit = "\n\nOA URL: "+rc_data['oa_link']
-            if str_cit != "\n\nOA URL: ":
+            str_cit = "\n\n*OA URL:* "+rc_data['oa_link']
+            if str_cit != "\n\n*OA URL:* ":
                 str_to_return = str_to_return + str_cit
 
             #Citations
-            str_cit = "\n\nCited by: "+rc_data['citation_count']
-            if str_cit != "\n\nCited by: ":
+            str_cit = "\n\n*Cited by:* "+rc_data['citation_count']
+            if str_cit != "\n\n*Cited by:* ":
                 str_to_return = str_to_return + str_cit
 
     except:
@@ -133,11 +133,11 @@ def who_cite_me_in_coci(a_text):
     try:
         a_text = a_text[0]
     except:
-        return "You must text me a DOI !"
+        return "You must text me a *DOI* !"
 
     find_list = re.findall(r"(10.\d{4,9}\/\S*)",a_text)
     if len(find_list) == 0:
-        return "Please, text me a correct DOI format"
+        return "Please, text me a correct *DOI format*"
 
     res = find_list[0]
     api_call = 'http://opencitations.net/index/coci/api/v1/citations/'
@@ -148,16 +148,16 @@ def who_cite_me_in_coci(a_text):
         contents = urllib.request.urlopen(api_call).read().decode('utf-8')
         json_output = json.loads(contents)
         if len(json_output) == 0:
-            return "No citations found for: "+ input
+            return "No citations found for: *"+ input+"*"
         else:
-            str_to_return = str_to_return + "\nCited by: "+str(len(json_output))+ "\n\n"
+            str_to_return = str_to_return + "\n- *Cited by:* "+str(len(json_output))+ "\n\n"
             for c_elem in json_output:
 
                 #OCI
-                str_to_return = str_to_return + "\nOCI: "+str(c_elem['oci'])
+                str_to_return = str_to_return + "\n- *OCI:* "+"["+str(c_elem['oci'])+"]"+"(http://opencitations.net/index/coci/browser/ci/"+str(c_elem['oci'])+")"
 
                 #DOI
-                str_to_return = str_to_return + "\nCiting DOI: "+'https://www.doi.org/'+c_elem['citing']
+                str_to_return = str_to_return + "\n- *Citing DOI:* "+'https://www.doi.org/'+c_elem['citing']
 
                 #Citation Creation date
                 creation_str = ""
@@ -169,7 +169,7 @@ def who_cite_me_in_coci(a_text):
                         if len(list_date) > 2:
                             creation_str = str(int(list_date[2])) + " "+ creation_str
                 if creation_str != "":
-                    str_to_return = str_to_return + "\nCitation creation date: "+creation_str
+                    str_to_return = str_to_return + "\n- *Citation creation date:* "+creation_str
 
                 #Timespan
                 tspan_str = ""
@@ -183,7 +183,7 @@ def who_cite_me_in_coci(a_text):
                         if result_y:
                             tspan_str += ", "+str(result_y.groups(0)[0]) + " Days"
                 if tspan_str != "":
-                    str_to_return = str_to_return + "\nTimespan: "+tspan_str
+                    str_to_return = str_to_return + "\n- *Timespan:* "+tspan_str
 
                 ##New item
                 str_to_return = str_to_return + "\n\n"
@@ -199,11 +199,11 @@ def what_are_my_ref_in_coci(a_text):
     try:
         a_text = a_text[0]
     except:
-        return "You must text me a DOI !"
+        return "You must text me a *DOI* !"
 
     find_list = re.findall(r"(10.\d{4,9}\/\S*)",a_text)
     if len(find_list) == 0:
-        return "Please, text me a correct DOI format"
+        return "Please, text me a correct *DOI format*"
 
     res = find_list[0]
     api_call = 'http://opencitations.net/index/coci/api/v1/references/'
@@ -214,16 +214,16 @@ def what_are_my_ref_in_coci(a_text):
         contents = urllib.request.urlopen(api_call).read().decode('utf-8')
         json_output = json.loads(contents)
         if len(json_output) == 0:
-            return "No references found for: "+ input
+            return "No references found for: *"+ input + "*"
         else:
-            str_to_return = str_to_return + "\nReferences: "+str(len(json_output))+ "\n\n"
+            str_to_return = str_to_return + "\n- *References:* "+str(len(json_output))+ "\n\n"
             for c_elem in json_output:
 
                 #OCI
-                str_to_return = str_to_return + "\nOCI: "+str(c_elem['oci'])
+                str_to_return = str_to_return + "\n- *OCI:* "+"["+str(c_elem['oci'])+"]"+"(http://opencitations.net/index/coci/browser/ci/"+str(c_elem['oci'])+")"
 
                 #DOI
-                str_to_return = str_to_return + "\nCited DOI: "+'https://www.doi.org/'+c_elem['cited']
+                str_to_return = str_to_return + "\n- *Cited DOI:* "+'https://www.doi.org/'+c_elem['cited']
 
                 #Citation Creation date
                 creation_str = ""
@@ -235,7 +235,7 @@ def what_are_my_ref_in_coci(a_text):
                         if len(list_date) > 2:
                             creation_str = str(int(list_date[2])) + " "+ creation_str
                 if creation_str != "":
-                    str_to_return = str_to_return + "\nCitation creation date: "+creation_str
+                    str_to_return = str_to_return + "\n- *Citation creation date:* "+creation_str
 
                 #Timespan
                 tspan_str = ""
@@ -249,7 +249,7 @@ def what_are_my_ref_in_coci(a_text):
                         if result_y:
                             tspan_str += ", "+str(result_y.groups(0)[0]) + " Days"
                 if tspan_str != "":
-                    str_to_return = str_to_return + "\nTimespan: "+tspan_str
+                    str_to_return = str_to_return + "\n- *Timespan:* "+tspan_str
 
                 ##New item
                 str_to_return = str_to_return + "\n\n"

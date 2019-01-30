@@ -64,6 +64,7 @@ def handle(msg):
                     msg = msg + "\n"
 
     list_msgs = []
+    original_length = len(msg)
     while len(msg) > 3000:
         index = 3000
         while True:
@@ -73,11 +74,15 @@ def handle(msg):
                 index -= 1
 
         list_msgs.append(msg[0:index])
-        msg = msg[index:len(msg)-1]
+        msg = msg[index:original_length-1]
     list_msgs.append(msg)
+    print("send back: "+str(len(list_msgs))+" msgs.")
+    #print(list_msgs[len(list_msgs)-1])
 
     for m in list_msgs:
-        bot.sendMessage(chat_id, m)
+        print(m[0:10].encode())
+        bot.sendMessage(chat_id,"\n"+m,parse_mode='Markdown',disable_web_page_preview=True)
+        time.sleep(0.5)
 
 
 all_commands = {}
