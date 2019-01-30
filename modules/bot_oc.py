@@ -81,7 +81,7 @@ def ask_coci(a_text):
 
             #Authors
             str_authors = "\n\nAuthor(s): "
-            list_authors = rc_data['author'].split(';')
+            list_authors = rc_data['author'].split('; ')
             for an_author in list_authors:
                 str_authors = str_authors + "\n" + str(an_author)
             if str_authors != "\n\nAuthor(s): ":
