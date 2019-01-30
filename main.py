@@ -22,6 +22,7 @@ MODULES_PATH = glob.glob('modules/*.py')
 
 
 def handle(msg):
+    parse_mode = None
     chat_id = msg['chat']['id']
 
     #print msg['text']
@@ -42,7 +43,10 @@ def handle(msg):
             if command in all_commands[module]['commands'].keys():
                 a_text.pop(0)
 
-                obj_command = all_commands[module]['commands'][command]
+                if 'parse_mode' in all_commands[module]['commands'][command]:
+                    parse_mode = all_commands[module]['commands'][command]['parse_mode']
+                else:
+                    parse_mode = None
 
                 spec = importlib.util.spec_from_file_location(all_commands[module]['path'],module)
                 foo = importlib.util.module_from_spec(spec)
@@ -79,9 +83,15 @@ def handle(msg):
     print("send back: "+str(len(list_msgs))+" msgs.")
     #print(list_msgs[len(list_msgs)-1])
 
+    count_msgs = 0
     for m in list_msgs:
-        print(m[0:10].encode())
-        bot.sendMessage(chat_id,"\n"+m,parse_mode='Markdown',disable_web_page_preview=True)
+        #print(m[0:10].encode())
+        #print(m[-1].encode())
+        if count_msgs >= 3:
+            bot.sendMessage(chat_id,'Too many messages to send !',parse_mode= None,disable_web_page_preview=True)
+            break
+        bot.sendMessage(chat_id,m,parse_mode= parse_mode,disable_web_page_preview=True)
+        count_msgs += 1
         time.sleep(0.5)
 
 
