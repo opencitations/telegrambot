@@ -63,7 +63,7 @@ def ask_coci(a_text):
 
     api_call = 'http://opencitations.net/index/coci/api/v1/metadata/'
     input = res
-    api_call = api_call+input
+    api_call = api_call+input+'?json=array(";%20",author).dict(",%20",author,fn,gn,orcid)'
     #call API
     try:
 
@@ -81,11 +81,27 @@ def ask_coci(a_text):
 
             #Authors
             str_authors = "\n\nAuthor(s): "
-            list_authors = rc_data['author'].split('; ')
-            for an_author in list_authors:
-                str_authors = str_authors + "\n" + str(an_author)
+            for an_author in rc_data['author']:
+                an_author_str = ""
+                if 'fn' in an_author:
+                    an_author_str = an_author_str + str(an_author['fn'])
+                if 'gn' in an_author:
+                    an_author_str = an_author_str+", "+str(an_author['gn'])
+                if 'orcid' in an_author:
+                    an_author_str = an_author_str + " "+"https://orcid.org/"+str(an_author['orcid'])
+
+                if an_author_str != "":
+                    str_authors = str_authors + '\n' + an_author_str
+
             if str_authors != "\n\nAuthor(s): ":
                 str_to_return = str_to_return + str_authors
+
+
+            #list_authors = rc_data['author'].split('; ')
+            #for an_author in list_authors:
+            #    str_authors = str_authors + "\n" + str(an_author)
+            #if str_authors != "\n\nAuthor(s): ":
+            #    str_to_return = str_to_return + str_authors
 
             #Publication year
             str_year = "\n\nPublication year: " + rc_data['year']
