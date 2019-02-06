@@ -154,39 +154,43 @@ def who_cite_me_in_coci(a_text):
             for c_elem in json_output:
 
                 #OCI
-                str_to_return = str_to_return + "\n- *OCI:* "+"["+str(c_elem['oci'])+"]"+"(http://opencitations.net/index/coci/browser/ci/"+str(c_elem['oci'])+")"
+                #str_to_return = str_to_return + "\n- *OCI:* "+"["+str(c_elem['oci'])+"]"+"(http://opencitations.net/index/coci/browser/ci/"+str(c_elem['oci'])+")"
 
                 #DOI
-                str_to_return = str_to_return + "\n- *Citing DOI:* "+'https://www.doi.org/'+c_elem['citing']
+                #str_to_return = str_to_return + "\n- *Citing DOI:* "+'https://www.doi.org/'+c_elem['citing']
+                lucinda_link = 'http://opencitations.net/index/coci/browser/ci/'+str(c_elem['oci'])
+                tiny_url = urllib.request.urlopen('http://tinyurl.com/api-create.php?url='+lucinda_link).read().decode('utf-8')
+                str_to_return = str_to_return + "\n["+c_elem['citing']+"]("+str(tiny_url)+")"
 
                 #Citation Creation date
-                creation_str = ""
-                list_date = c_elem['creation'].split("-")
-                if len(list_date) > 0:
-                    creation_str = str(list_date[0])
-                    if len(list_date) > 1:
-                        creation_str = get_month_name(str(list_date[1])) +" "+ creation_str
-                        if len(list_date) > 2:
-                            creation_str = str(int(list_date[2])) + " "+ creation_str
-                if creation_str != "":
-                    str_to_return = str_to_return + "\n- *Citation creation date:* "+creation_str
+                #creation_str = ""
+                #list_date = c_elem['creation'].split("-")
+                #if len(list_date) > 0:
+                #    creation_str = str(list_date[0])
+                #    if len(list_date) > 1:
+                #        creation_str = get_month_name(str(list_date[1])) +" "+ creation_str
+                #        if len(list_date) > 2:
+                #            creation_str = str(int(list_date[2])) + " "+ creation_str
+                #if creation_str != "":
+                #    str_to_return = str_to_return + "\n- *Citation creation date:* "+creation_str
 
                 #Timespan
-                tspan_str = ""
-                result_y = re.search(r"(\d{1,})Y",c_elem['timespan'])
-                if result_y:
-                    tspan_str += str(result_y.groups(0)[0]) + " Years"
-                    result_y = re.search(r"(\d{1,})M",c_elem['timespan'])
-                    if result_y:
-                        tspan_str += ", "+str(result_y.groups(0)[0]) + " Months"
-                        result_y = re.search(r"(\d{1,})D",c_elem['timespan'])
-                        if result_y:
-                            tspan_str += ", "+str(result_y.groups(0)[0]) + " Days"
-                if tspan_str != "":
-                    str_to_return = str_to_return + "\n- *Timespan:* "+tspan_str
+                #tspan_str = ""
+                #result_y = re.search(r"(\d{1,})Y",c_elem['timespan'])
+                #if result_y:
+                #    tspan_str += str(result_y.groups(0)[0]) + " Years"
+                #    result_y = re.search(r"(\d{1,})M",c_elem['timespan'])
+                #    if result_y:
+                #        tspan_str += ", "+str(result_y.groups(0)[0]) + " Months"
+                #        result_y = re.search(r"(\d{1,})D",c_elem['timespan'])
+                #        if result_y:
+                #            tspan_str += ", "+str(result_y.groups(0)[0]) + " Days"
+                #if tspan_str != "":
+                #    str_to_return = str_to_return + "\n- *Timespan:* "+tspan_str
 
                 ##New item
-                str_to_return = str_to_return + "\n\n"
+                #str_to_return = str_to_return + "\n\n"
+                #str_to_return = str_to_return + "\n"
     except:
         return "Sorry, the connection went wrong!"
 
@@ -220,39 +224,43 @@ def what_are_my_ref_in_coci(a_text):
             for c_elem in json_output:
 
                 #OCI
-                str_to_return = str_to_return + "\n- *OCI:* "+"["+str(c_elem['oci'])+"]"+"(http://opencitations.net/index/coci/browser/ci/"+str(c_elem['oci'])+")"
+                #str_to_return = str_to_return + "\n- *OCI:* "+"["+str(c_elem['oci'])+"]"+"(http://opencitations.net/index/coci/browser/ci/"+str(c_elem['oci'])+")"
 
                 #DOI
-                str_to_return = str_to_return + "\n- *Cited DOI:* "+'https://www.doi.org/'+c_elem['cited']
+                #str_to_return = str_to_return + "\n- *Cited DOI:* "+'https://www.doi.org/'+c_elem['cited']
+
+                lucinda_link = 'http://opencitations.net/index/coci/browser/ci/'+str(c_elem['oci'])
+                tiny_url = urllib.request.urlopen('http://tinyurl.com/api-create.php?url='+lucinda_link).read().decode('utf-8')
+                str_to_return = str_to_return + "\n["+c_elem['cited']+"]("+str(tiny_url)+")"
 
                 #Citation Creation date
-                creation_str = ""
-                list_date = c_elem['creation'].split("-")
-                if len(list_date) > 0:
-                    creation_str = str(list_date[0])
-                    if len(list_date) > 1:
-                        creation_str = get_month_name(str(list_date[1])) +" "+ creation_str
-                        if len(list_date) > 2:
-                            creation_str = str(int(list_date[2])) + " "+ creation_str
-                if creation_str != "":
-                    str_to_return = str_to_return + "\n- *Citation creation date:* "+creation_str
+                #creation_str = ""
+                #list_date = c_elem['creation'].split("-")
+                #if len(list_date) > 0:
+                #    creation_str = str(list_date[0])
+                #    if len(list_date) > 1:
+                #        creation_str = get_month_name(str(list_date[1])) +" "+ creation_str
+                #        if len(list_date) > 2:
+                #            creation_str = str(int(list_date[2])) + " "+ creation_str
+                #if creation_str != "":
+                #    str_to_return = str_to_return + "\n- *Citation creation date:* "+creation_str
 
                 #Timespan
-                tspan_str = ""
-                result_y = re.search(r"(\d{1,})Y",c_elem['timespan'])
-                if result_y:
-                    tspan_str += str(result_y.groups(0)[0]) + " Years"
-                    result_y = re.search(r"(\d{1,})M",c_elem['timespan'])
-                    if result_y:
-                        tspan_str += ", "+str(result_y.groups(0)[0]) + " Months"
-                        result_y = re.search(r"(\d{1,})D",c_elem['timespan'])
-                        if result_y:
-                            tspan_str += ", "+str(result_y.groups(0)[0]) + " Days"
-                if tspan_str != "":
-                    str_to_return = str_to_return + "\n- *Timespan:* "+tspan_str
+                #tspan_str = ""
+                #result_y = re.search(r"(\d{1,})Y",c_elem['timespan'])
+                #if result_y:
+                #    tspan_str += str(result_y.groups(0)[0]) + " Years"
+                #    result_y = re.search(r"(\d{1,})M",c_elem['timespan'])
+                #    if result_y:
+                #        tspan_str += ", "+str(result_y.groups(0)[0]) + " Months"
+                #        result_y = re.search(r"(\d{1,})D",c_elem['timespan'])
+                #        if result_y:
+                #            tspan_str += ", "+str(result_y.groups(0)[0]) + " Days"
+                #if tspan_str != "":
+                #    str_to_return = str_to_return + "\n- *Timespan:* "+tspan_str
 
                 ##New item
-                str_to_return = str_to_return + "\n\n"
+                #str_to_return = str_to_return + "\n\n"
     except:
         return "Sorry, the connection went wrong!"
 
