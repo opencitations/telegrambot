@@ -157,10 +157,11 @@ def who_cite_me_in_coci(a_text):
                 #str_to_return = str_to_return + "\n- *OCI:* "+"["+str(c_elem['oci'])+"]"+"(http://opencitations.net/index/coci/browser/ci/"+str(c_elem['oci'])+")"
 
                 #DOI
-                #str_to_return = str_to_return + "\n- *Citing DOI:* "+'https://www.doi.org/'+c_elem['citing']
-                lucinda_link = 'http://opencitations.net/index/coci/browser/ci/'+str(c_elem['oci'])
-                tiny_url = urllib.request.urlopen('http://tinyurl.com/api-create.php?url='+lucinda_link).read().decode('utf-8')
-                str_to_return = str_to_return + "\n["+c_elem['citing']+"]("+str(tiny_url)+")"
+                str_to_return = str_to_return + "\n- *Citing DOI:* "+'https://www.doi.org/'+c_elem['citing']
+                #WITH tinyurl for OCI
+                #lucinda_link = 'http://opencitations.net/index/coci/browser/ci/'+str(c_elem['oci'])
+                #tiny_url = urllib.request.urlopen('http://tinyurl.com/api-create.php?url='+lucinda_link).read().decode('utf-8')
+                #str_to_return = str_to_return + "\n["+c_elem['citing']+"]("+str(tiny_url)+")"
 
                 #Citation Creation date
                 #creation_str = ""
@@ -227,11 +228,11 @@ def what_are_my_ref_in_coci(a_text):
                 #str_to_return = str_to_return + "\n- *OCI:* "+"["+str(c_elem['oci'])+"]"+"(http://opencitations.net/index/coci/browser/ci/"+str(c_elem['oci'])+")"
 
                 #DOI
-                #str_to_return = str_to_return + "\n- *Cited DOI:* "+'https://www.doi.org/'+c_elem['cited']
-
-                lucinda_link = 'http://opencitations.net/index/coci/browser/ci/'+str(c_elem['oci'])
-                tiny_url = urllib.request.urlopen('http://tinyurl.com/api-create.php?url='+lucinda_link).read().decode('utf-8')
-                str_to_return = str_to_return + "\n["+c_elem['cited']+"]("+str(tiny_url)+")"
+                str_to_return = str_to_return + "\n- *Cited DOI:* "+'https://www.doi.org/'+c_elem['cited']
+                #WITH tinyurl for OCI
+                #lucinda_link = 'http://opencitations.net/index/coci/browser/ci/'+str(c_elem['oci'])
+                #tiny_url = urllib.request.urlopen('http://tinyurl.com/api-create.php?url='+lucinda_link).read().decode('utf-8')
+                #str_to_return = str_to_return + "\n["+c_elem['cited']+"]("+str(tiny_url)+")"
 
                 #Citation Creation date
                 #creation_str = ""
